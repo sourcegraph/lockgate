@@ -50,7 +50,8 @@ type DistributedLockerBackend interface {
 }
 
 type AcquireOptions struct {
-	Shared bool `json:"shared"`
+	Shared           bool  `json:"shared"`
+	MaxSharedHolders int64 `json:"maxSharedHolders"`
 }
 
 type LockLeaseRecord struct {

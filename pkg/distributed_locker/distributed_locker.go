@@ -41,7 +41,10 @@ RETRY_ACQUIRE:
 		}
 	}
 
-	if lockHandle, err := l.Backend.Acquire(lockName, AcquireOptions{Shared: opts.Shared}); IsErrShouldWait(err) {
+	if lockHandle, err := l.Backend.Acquire(lockName, AcquireOptions{
+		Shared:           opts.Shared,
+		MaxSharedHolders: opts.MaxSharedHolders,
+	}); IsErrShouldWait(err) {
 		if opts.NonBlocking {
 			debug("(acquire %q) non blocking acquire done: lock not taken!", lockName)
 			return false, lockgate.LockHandle{}, nil

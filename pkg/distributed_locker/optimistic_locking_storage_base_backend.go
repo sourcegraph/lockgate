@@ -57,6 +57,14 @@ RETRY_ACQUIRE:
 			}
 
 			if opts.Shared && oldLease.IsShared {
+				// If MaxSharedHolders is set, and the existing lease has more than this
+				// number of holders, then continue waiting.
+				if opts.MaxSharedHolders > 0 && oldLease.SharedHoldersCount >= opts.MaxSharedHolders {
+					debug("(acquire lock %q) shared holders counter exceed desired max shared holders %d: %#v",
+						oldLease.SharedHoldersCount, lockName, oldLease)
+					return lockgate.LockHandle{}, ErrShouldWait
+				}
+
 				oldLease.SharedHoldersCount++
 				oldLease.ExpireAtTimestamp = time.Now().Unix() + DistributedLockLeaseTTLSeconds
 				debug("(acquire lock %q) incremented shared holders counter for existing lease: %#v", lockName, oldLease)

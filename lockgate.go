@@ -23,6 +23,11 @@ type AcquireOptions struct {
 	NonBlocking bool
 	Timeout     time.Duration
 	Shared      bool
+	// MaxSharedHolders, if greater than 0 and if Shared is true, indicates that the lock
+	// acquisition should not proceed if there are more than this number of current holders.
+	//
+	// Note: This is currently only implemented for DistributedLockerBackend.
+	MaxSharedHolders int64 `json:"maxSharedHolders"`
 
 	OnWaitFunc      func(lockName string, doWait func() error) error
 	OnLostLeaseFunc func(lock LockHandle) error
