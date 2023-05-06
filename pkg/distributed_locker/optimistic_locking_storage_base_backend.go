@@ -60,7 +60,7 @@ RETRY_ACQUIRE:
 				// If MaxSharedHolders is set, and the existing lease has more than this
 				// number of holders, then continue waiting.
 				if opts.MaxSharedHolders > 0 && oldLease.SharedHoldersCount >= opts.MaxSharedHolders {
-					debug("(acquire lock %q) shared holders counter exceed desired max shared holders %d: %#v",
+					debug("(acquire lock %q) shared holders counter exceed desired max shared holders %d: %s %#v",
 						oldLease.SharedHoldersCount, lockName, oldLease)
 					return lockgate.LockHandle{}, ErrShouldWait
 				}
